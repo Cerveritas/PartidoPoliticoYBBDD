@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PaginaPrincipalActivity">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logoazul" />
+
+    <Button
+        android:id="@+id/botonIntroduccion"
+        android:layout_width="238dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="86dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="87dp"
+        android:text="INTRODUCCION"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/botonPoliticos"
+        android:layout_width="238dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="86dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="87dp"
+        android:text="POLITICOS"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/botonIntroduccion"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/botonPropuesta"
+        android:layout_width="238dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="86dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="87dp"
+        android:text="PROPUESTA ELECTORAL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/botonPoliticos"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/botonSO"
+        android:layout_width="238dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="32dp"
+        android:text="S.O"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/botonPropuesta" />
+</androidx.constraintlayout.widget.ConstraintLayout>

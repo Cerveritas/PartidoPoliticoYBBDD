@@ -22,33 +22,33 @@ public class PaginaPrincipalActivity extends AppCompatActivity {
 
 
         // Accion boton introduccion
-       botonIntroduccion.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               Intent intent = new Intent(PaginaPrincipalActivity.this, IntroduccionActivity.class);
-               startActivity(intent);
-           }
-       });
+        botonIntroduccion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PaginaPrincipalActivity.this, IntroduccionActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Accion boton politicos
-       botonPoliticos.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               Intent intent = new Intent(PaginaPrincipalActivity.this, PoliticosActivity.class);
-               startActivity(intent);
-           }
-       });
+        botonPoliticos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PaginaPrincipalActivity.this, PoliticosActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Accion boton propuesta electoral
-       botonPropuestaElectoral.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               Intent intent = new Intent(PaginaPrincipalActivity.this, PropuestaActivity.class);
-               startActivity(intent);
-           }
-       });
+        botonPropuestaElectoral.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PaginaPrincipalActivity.this, PropuestaActivity.class);
+                startActivity(intent);
+            }
+        });
 
-       // Accuib boton sistema operativo
+        // Accuib boton sistema operativo
         botonSistemaOperativo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

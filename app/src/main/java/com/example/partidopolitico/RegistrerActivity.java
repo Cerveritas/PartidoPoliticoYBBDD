@@ -11,12 +11,14 @@ import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class RegistrerActivity extends AppCompatActivity {
 
-    static Connection con;
+    static Connection connection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,92 +33,87 @@ public class RegistrerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 EditText editTextCorreo = findViewById(R.id.editTextCorreoRegistrer);
                 EditText editTextContrasena = findViewById(R.id.editTextContraseñaRegistrer);
 
-
-
-
-                // CUANDO SE PULSE EL BOTON DE REGISTRO SUCEDERAN UNA SERIE DE SUCESOS
-
-                // 1º - Comprobara el correo y contraseña para meterlo en la base de datos
-                    /* Si se ha metido con exito pasara lo siguiente */
-
-
-                // Obtener los datos del usuario
-                String correo = editTextCorreo.getText().toString().trim();
-                String contrasena = editTextContrasena.getText().toString().trim();
-
-                // Conectarse a la base de datos
                 try {
+                    // Configura los datos de conexión a la base de datos
+                    String host = "localhost";
+                    String port = "3306";
+                    String username = "root";
+                    String password = "admin";
+                    String database = "mi_base_de_datos";
 
-                    conectarBD();
+                    // Establece la conexión con la base de datos
+                    connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
 
-                   // Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mi_base_de_datos","root", "Myandroidop5");
 
-                    // Ejecutar la consulta SQL
-                    Statement st = con.createStatement();
-                    st.executeUpdate("INSERT INTO usuarios (correo, contraseña) VALUES ('" + correo + "', '" + contrasena + "');");
+                    // Comprobamos si la conexion se ha establecido correctamente
+                    if (connection.isClosed()) {
+                        // La conexión no se ha establecido correctamente
+                        Toast.makeText(getApplicationContext(), "No se ha podido conectar con la base de datos", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // La conexión se ha establecido correctamente
+                        Toast.makeText(getApplicationContext(), "Se ha establecido conexion con la base de datos", Toast.LENGTH_SHORT).show();
 
-                    // Cerrar la conexión
-                    st.close();
-                    con.close();
-                } catch (Exception e) {
+                    }
+
+
+
+
+                    // Obtén los valores de los campos de texto
+                    String correo = editTextCorreo.getText().toString().trim();
+                    String contrasena = editTextContrasena.getText().toString().trim();
+
+                    // Verifica que el correo electrónico no esté ya registrado
+                    String query = "SELECT * FROM usuarios WHERE correo = ?";
+                    PreparedStatement statement = connection.prepareStatement(query);
+                    statement.setString(1, correo);
+                    ResultSet resultSet = statement.executeQuery();
+
+                    if (resultSet.next()) {
+                        // El correo electrónico ya está registrado, no se inserta en la base de datos
+                        Toast.makeText(getApplicationContext(), "El correo electrónico ya está registrado", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // El correo electrónico no está registrado, se inserta en la base de datos
+                        query = "INSERT INTO usuarios (correo, contraseña) VALUES (?, ?);";
+                        statement = connection.prepareStatement(query);
+                        statement.setString(1, correo);
+                        statement.setString(2, contrasena);
+
+                        // Verifica que la consulta SQL se ejecutó correctamente
+                        int filasAfectadas = statement.executeUpdate();
+
+                        if (filasAfectadas == 1) {
+                            // La consulta SQL se ejecutó correctamente, se inserta el usuario en la base de datos
+                            Toast.makeText(getApplicationContext(), "Registro completado con exito !!!!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // La consulta SQL no se ejecutó correctamente, se produjo un error
+                            Toast.makeText(getApplicationContext(), "Error al registrar el usuario", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                } catch (SQLException e) {
                     e.printStackTrace();
+
+                    // En caso de que ya este ese correo y contraseña en la base de datos
+                    // Nos saldra un mensaje de usuario ya registrado y tendremos que volver a rellenar los campos de diferente manera
+
+                    if (e.getErrorCode() == 1062) {
+                        Toast.makeText(getApplicationContext(), "El correo o contraseña ya están registrados", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Error al registrar el usuario", Toast.LENGTH_SHORT).show();
+                    }
                 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                // 2º - Mensaje en pantalla de registro completado
-                Toast.makeText(getApplicationContext(), "Registro completado con exito !!!!", Toast.LENGTH_SHORT).show();
-
-                // 3º - Redirigira al MainActivity
-                Intent intent = new Intent(RegistrerActivity.this, MainActivity.class);
-                startActivity(intent);
-
-
-
-
-
-
-
-
-
-                /* En caso de que ya este ese correo y contraseña en la base de datos */
-
-                // Nos saldra un mensaje de usuario ya registrado y tendremos que volver a rellenar los campos de diferente manera
-
-
-
-
-
             }
 
-            public  void conectarBD() throws SQLException {
-                String url="jdbc:mysql://localhost:3306/";
-                String user= "root";
-                String pwd="Myandroidop5";
-                con = DriverManager.getConnection(url,user,pwd);
-                System.out.println("Conexión establecida...");
-            }
         });
-
-
-
-
-
-
-    }
+   }
 }
+
+
+
+
+
+
+

@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 String contraseñaIngresada = editTextPassword.getText().toString().trim();
 
 
-                if (correoIngresado.equals(correoEsperado) && contraseñaIngresada.equals(contraseñaEsperada)){
+                if (correoIngresado.equals(correoEsperado) && contraseñaIngresada.equals(contraseñaEsperada)) {
                     Toast.makeText(getApplicationContext(), "Acceso Permitido", Toast.LENGTH_SHORT).show();
 
                     // Crear un Intent para abrir la nueva actividad (PaginaPrincipalActivity) en este caso
@@ -59,9 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
 
 
     }

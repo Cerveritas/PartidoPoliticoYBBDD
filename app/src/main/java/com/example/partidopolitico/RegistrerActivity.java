@@ -9,6 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+
+import org.bson.Document;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -26,89 +31,35 @@ public class RegistrerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registrer);
 
 
+        EditText correo = findViewById(R.id.editTextCorreoRegistrer);
+        EditText contrasena = findViewById(R.id.editTextContraseñaRegistrer);
         Button botonRegistrarse = findViewById(R.id.buttonrRegistrarse);
 
 
         botonRegistrarse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MongoClient mongoClient = new MongoClient("localhost", 27017);
+                MongoCollection<Document> collection = mongoClient.getDatabase("my_database").getCollection("usuarios");
 
-                EditText editTextCorreo = findViewById(R.id.editTextCorreoRegistrer);
-                EditText editTextContrasena = findViewById(R.id.editTextContraseñaRegistrer);
+                Document document = new Document();
+                document.put("correo", correo.getText().toString());
+                document.put("contrasena", contrasena.getText().toString());
 
-                try {
-                    // Configura los datos de conexión a la base de datos
-                    String host = "localhost";
-                    String port = "3306";
-                    String username = "root";
-                    String password = "admin";
-                    String database = "mi_base_de_datos";
+                collection.insertOne(document);
 
-                    // Establece la conexión con la base de datos
-                    connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
+                System.out.println("Los datos se han insertado correctamente ");
+                Intent intent = new Intent(RegistrerActivity.this, MainActivity.class);
+                startActivity(intent);
 
-
-                    // Comprobamos si la conexion se ha establecido correctamente
-                    if (connection.isClosed()) {
-                        // La conexión no se ha establecido correctamente
-                        Toast.makeText(getApplicationContext(), "No se ha podido conectar con la base de datos", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // La conexión se ha establecido correctamente
-                        Toast.makeText(getApplicationContext(), "Se ha establecido conexion con la base de datos", Toast.LENGTH_SHORT).show();
-
-                    }
-
-
-
-
-                    // Obtén los valores de los campos de texto
-                    String correo = editTextCorreo.getText().toString().trim();
-                    String contrasena = editTextContrasena.getText().toString().trim();
-
-                    // Verifica que el correo electrónico no esté ya registrado
-                    String query = "SELECT * FROM usuarios WHERE correo = ?";
-                    PreparedStatement statement = connection.prepareStatement(query);
-                    statement.setString(1, correo);
-                    ResultSet resultSet = statement.executeQuery();
-
-                    if (resultSet.next()) {
-                        // El correo electrónico ya está registrado, no se inserta en la base de datos
-                        Toast.makeText(getApplicationContext(), "El correo electrónico ya está registrado", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // El correo electrónico no está registrado, se inserta en la base de datos
-                        query = "INSERT INTO usuarios (correo, contraseña) VALUES (?, ?);";
-                        statement = connection.prepareStatement(query);
-                        statement.setString(1, correo);
-                        statement.setString(2, contrasena);
-
-                        // Verifica que la consulta SQL se ejecutó correctamente
-                        int filasAfectadas = statement.executeUpdate();
-
-                        if (filasAfectadas == 1) {
-                            // La consulta SQL se ejecutó correctamente, se inserta el usuario en la base de datos
-                            Toast.makeText(getApplicationContext(), "Registro completado con exito !!!!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            // La consulta SQL no se ejecutó correctamente, se produjo un error
-                            Toast.makeText(getApplicationContext(), "Error al registrar el usuario", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
-
-                    // En caso de que ya este ese correo y contraseña en la base de datos
-                    // Nos saldra un mensaje de usuario ya registrado y tendremos que volver a rellenar los campos de diferente manera
-
-                    if (e.getErrorCode() == 1062) {
-                        Toast.makeText(getApplicationContext(), "El correo o contraseña ya están registrados", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Error al registrar el usuario", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                mongoClient.close();
+                
             }
 
         });
-   }
+
+
+        }
 }
 
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "53227611913",
+    "project_id": "partidopolitico-47c8e",
+    "storage_bucket": "partidopolitico-47c8e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53227611913:android:faef585292f4c6e9a295d8",
+        "android_client_info": {
+          "package_name": "com.example.partidopolitico"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaotdBXYEKqS3Sdc5jRNfW8G-pSLp44kA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    private DatabaseHelper dbHelper;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +32,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String correoEsperado = "espana@gmail.com";
+
+
+                String correoIngresado = editTextEmail.getText().toString().trim();
+                String contrasenaIngresada = editTextPassword.getText().toString().trim();
+
+                String datosUsuario = String.valueOf(dbHelper.verificarUsuario(correoIngresado, contrasenaIngresada));
+
+
+                if (datosUsuario.equals(correoIngresado) && datosUsuario.equals(contrasenaIngresada)){
+                    Toast.makeText(getApplicationContext(), "Acceso Permitido", Toast.LENGTH_SHORT).show();
+
+                    // Crear un Intent para abrir la nueva actividad (PaginaPrincipalActivity) en este caso
+                    Intent intent = new Intent(MainActivity.this, PaginaPrincipalActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Acceso Denegado", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+
+
+                /*String correoEsperado = "espana@gmail.com";
                 String contraseñaEsperada = "espana";
 
                 String correoIngresado = editTextEmail.getText().toString().trim(); //EL TRIM ES PARA OMITIR LINEAS EN BLANCO
@@ -44,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "Acceso Denegado", Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
 
